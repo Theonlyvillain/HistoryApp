@@ -1,0 +1,71 @@
+package com.example.historymatch
+
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var ageEditText: EditText
+    private lateinit var generateButton: Button
+    private lateinit var clearButton: Button
+    private lateinit var resultTextView: TextView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        ageEditText = findViewById(R.id.ageEditText)
+        generateButton = findViewById(R.id.button)
+        clearButton = findViewById(R.id.button2)
+        resultTextView = findViewById(R.id.resultTextView)
+
+        generateButton.setOnClickListener {
+            generateHistory()
+        }
+
+        clearButton.setOnClickListener {
+            clearInput()
+        }
+    }
+
+    private fun generateHistory() {
+        val ageText = ageEditText.text.toString()
+
+        try {
+            val age = ageText.toInt()
+
+            if (age < 20 || age > 100) {
+                resultTextView.text = "The age is out of range (20 - 100)."
+                return
+            }
+
+            val historyFigure = matchAgeToHistory(age)
+            resultTextView.text = "You share a birth year with $historyFigure."
+        } catch (e: NumberFormatException) {
+            resultTextView.text = "The age is an invalid format. Please enter a valid whole number."
+        }
+    }
+
+    private fun matchAgeToHistory(age: Int): String {
+        return when (age) {
+            in 20..29 -> "Nelson Mandela"
+            in 30..39 -> "Queen Elizabeth II"
+            in 40..49 -> "Adolf Hitler"
+            in 50..59 -> "Vladimir Putin"
+            in 60..69 -> "The Pope"
+            in 70..79 -> "Lady Gaga"
+            in 80..89 -> "Michael Jackson"
+            in 90..99 -> "2Pac"
+            100 -> "William Shakespeare"
+            else -> "Beyoncé"
+        }
+    }
+
+    private fun clearInput() {
+        ageEditText.text.clear()
+        resultTextView.text = ""
+    }
+}
